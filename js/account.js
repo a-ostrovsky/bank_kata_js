@@ -1,19 +1,23 @@
 'use strict';
-exports.Account = function(a, b) {
+
+var m = require('./money.js')
+
+exports.Account = function() {
     var balance = 0;
     this.getBalance = function() {
-        return balance;
+        return new m.Money("EUR", balance);
     }
-    this.deposit = function(ammount) {
-        balance += ammount;
+    this.deposit = function(money) {
+        balance += money.ammount;
     }
-    this.withdraw = function(ammount) {
-        if(ammount > balance){
+    this.withdraw = function(money) {
+        if(money.ammount > balance){
             throw { 
                 name: "WithdrawlOverdrawsAccount",
                 message: "Withdrawl not possible. Not enough money."
             };
         }
-        balance -= ammount;
+        balance -= money.ammount;
     }
 }
+
