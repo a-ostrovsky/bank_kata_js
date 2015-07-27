@@ -2,12 +2,16 @@
 var acc = require("../js/account");
 var m = require('../js/money.js');
 
-describe("When account is initialized", function() {
+describe("When account is initialized", function() {    
+    var moneyEquality = function(first, second) {
+        if (first instanceof m.Money && second instanceof m.Money) {
+            return first.currency === second.currency && first.ammount === second.ammount;
+        }
+    }
     var account;
     beforeEach(function() {
-        account = new acc.Account();
-    })
-    it("then it has zero balance", function() {
+        jasmine.addCustomEqualityTester(moneyEquality);
+        account = new acc.Account("EUR");
         expect(account.getBalance()).toEqual(new m.Money("EUR", 0));
     });
     describe("and when money is deposited", function() {
@@ -43,18 +47,17 @@ describe("When account is initialized", function() {
             });
         });
     });
-//    describe("and when money is deposited in different currencies", function() {
-//        var firstAmmount ={ammount: 10, currency: m.Currency.USD};
-//        var secondAmmount = {ammount: 100, currency: "EUR"};
-//        beforeEach(function() {
-//            account.deposit(firstAmmount);
-//            account.deposit(secondAmmount);
-//        });
-//        if("should balance of the sum of deposits regarding currencies", function() {
-//            //TODO: Implement this
-//            //1 USD = 0.9 EUR
-//            //1 EUR = 1.1 USD
-//            expect(true).toEqual(false);
-//        });
-//    });
+    describe("and when money is deposited in different currencies", function() {
+        var firstAmmount = new m.Money("USD", 10);
+        var secondAmmount = new m.Money("EUR", 100);
+        beforeEach(function() {
+            account.deposit(firstAmmount);
+            account.deposit(secondAmmount);
+        });
+        it("should balance be equal to the sum of deposits in the currency of the account", function() {        
+            //1 USD = 0.9 EUR            
+            //=> 10*0.9 + 100 = 109
+            expect(account.getBalance()).toEqual(new m.Money("EUR", 109));
+        });
+    });
 });

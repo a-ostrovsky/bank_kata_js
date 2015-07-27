@@ -2,13 +2,15 @@
 
 var m = require('./money.js')
 
-exports.Account = function() {
+exports.Account = function(currency) { 
     var balance = 0;
+    this.currency = currency;
+
     this.getBalance = function() {
         return new m.Money("EUR", balance);
     }
     this.deposit = function(money) {
-        balance += money.ammount;
+        balance += money.convertTo(this.currency).ammount;
     }
     this.withdraw = function(money) {
         if(money.ammount > balance){
