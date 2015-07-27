@@ -2,12 +2,13 @@
 var acc = require("../js/account");
 var m = require('../js/money.js');
 
-describe("When account is initialized", function() {    
-    var moneyEquality = function(first, second) {
-        if (first instanceof m.Money && second instanceof m.Money) {
-            return first.currency === second.currency && first.ammount === second.ammount;
-        }
+var moneyEquality = function(first, second) {
+    if (first instanceof m.Money && second instanceof m.Money) {
+        return first.currency === second.currency && first.ammount === second.ammount;
     }
+}
+
+describe("When account is initialized to EUR", function() {        
     var account;
     beforeEach(function() {
         jasmine.addCustomEqualityTester(moneyEquality);
@@ -61,3 +62,6 @@ describe("When account is initialized", function() {
         });
     });
 });
+describe("When account is initialized to USD", function() {    
+    
+})
