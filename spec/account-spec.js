@@ -13,8 +13,10 @@ describe("When account is initialized to EUR", function() {
     beforeEach(function() {
         jasmine.addCustomEqualityTester(moneyEquality);
         account = new acc.Account("EUR");
-        expect(account.getBalance()).toEqual(new m.Money("EUR", 0));
     });
+    it("should have zero balance", function() {
+        expect(account.getBalance()).toEqual(new m.Money("EUR", 0));
+    })
     describe("and when money is deposited", function() {
         var firstAmmount = new m.Money("EUR", 10);
         beforeEach(function() {
@@ -55,13 +57,25 @@ describe("When account is initialized to EUR", function() {
             account.deposit(firstAmmount);
             account.deposit(secondAmmount);
         });
-        it("should balance be equal to the sum of deposits in the currency of the account", function() {        
+        it("should have balance equal to the sum of deposits in the currency of the account", function() {        
             //1 USD = 0.9 EUR            
             //=> 10*0.9 + 100 = 109
             expect(account.getBalance()).toEqual(new m.Money("EUR", 109));
         });
     });
 });
-describe("When account is initialized to USD", function() {    
-    
+describe("When account is initialized to USD", function() {
+    var account;
+    beforeEach(function() {
+        jasmine.addCustomEqualityTester(moneyEquality);
+        account = new acc.Account("USD");
+    });
+    describe("and when money is deposited in EUR", function() {
+        beforeEach(function() {
+            account.deposit(new m.Money("EUR", 10));
+        });
+        it("should have balanace in currency of the account", function() {
+            expect(account.getBalance()).toEqual(new m.Money("USD", 11));
+        });
+    });
 })
