@@ -1,0 +1,24 @@
+{
+  "name": "bank_kata",
+  "version": "0.0.1",
+  "description": "bank kata in javascript using tdd",
+  "main": "index.js",
+  "dependencies": {
+    "jasmine-core": "~2.3.4",
+    "jasmine-data-provider": "~2.0.1",
+    "requirejs": "~2.1.17"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/a-ostrovsky/bank_kata_js.git"
+  },
+  "author": "Alexander Ostrovsky",
+  "license": "The BSD 2-Clause License",
+  "bugs": {
+    "url": "https://github.com/a-ostrovsky/bank_kata_js/issues"
+  }
+}
