@@ -24,5 +24,10 @@ describe('When log is created', function () {
         it('should have money on the account', function() {
             expect(account.deposit).toHaveBeenCalledWith(depositedAmmount);
         });
+        it('should have been logged', function() {
+            //TODO: Check string representation
+            //or some other event representation
+        });
+
     });
 });
