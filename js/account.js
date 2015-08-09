@@ -12,6 +12,7 @@ exports.Account = function(currency) {
         balance += money.convertTo(currency).ammount;
     }
     this.withdraw = function(money) {
+        //TODO: withdraw in different currencies
         if(money.ammount > balance){
             throw { 
                 name: "WithdrawlOverdrawsAccount",
