@@ -2,7 +2,7 @@
 
 var m = require('./money.js')
 
-exports.Account = function(currency) { 
+exports.Account = function(currency) {
     var balance = 0;
 
     this.getBalance = function() {
