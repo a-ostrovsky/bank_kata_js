@@ -40,7 +40,7 @@ describe('When log is created', function () {
         });
         it('should have been logged', function() {
             expect(log.events())
-                .toContain(new de.DepositEvent(currentTime, depositedAmmount));
+                .toContain(new de.DepositEvent(account, currentTime, depositedAmmount));
         });
 
     });

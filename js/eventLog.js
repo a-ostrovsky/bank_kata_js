@@ -9,12 +9,10 @@ exports.EventLog = function(account) {
         return events;
     }
 
-    this.deposit = function(money) {
-        //TODO: Create DepositEvent that deposits money 
-        //and has a string reporesentation
-        var depositEvent = new de.DepositEvent(new Date(), money);
-        events.push(depositEvent);            
-        account.deposit(money);
+    this.deposit = function(money) {               
+        var depositEvent = new de.DepositEvent(account, new Date(), money);
+        depositEvent.process();
+        events.push(depositEvent);        
     }
 
 }

@@ -63,6 +63,17 @@ describe("When account is initialized to EUR", function() {
             expect(account.getBalance()).toEqual(new m.Money("EUR", 109));
         });
     });
+    describe("and when money is withdrawn in different currency", function () {
+        var ammountOnAccount = new m.Money("EUR", 10);
+        var withdrawl = new m.Money("USD", 10); //= 9 EUR
+        beforeEach(function() {
+            account.deposit(ammountOnAccount);
+            account.withdraw(withdrawl);
+        });
+        it("should withdraw money in provided currency", function() {
+            expect(account.getBalance()).toEqual(new m.Money("EUR", 1));
+        });
+    });
 });
 describe("When account is initialized to USD", function() {
     var account;
