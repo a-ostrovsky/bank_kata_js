@@ -5,8 +5,8 @@ var m = require('../js/money.js');
 var de = require('../js/depositEvent.js');
 
 var eventEqualityByStringRepresentation = function(first, second) {
-    if (first instanceof de.DepositEvent && second instanceof de.DepositEvent) {
-        return first.toString() === second.toString();
+    if (typeof first.toLog == 'function' && typeof second.toLog == 'function') {
+        return first.toLog() === second.toLog();
     }
 }
 
