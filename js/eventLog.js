@@ -7,8 +7,8 @@ exports.EventLog = function(account) {
     var events = [];
 
     var processAndAddEventToLog = function(event) {
-        event.process();
         events.push(event);
+        event.process();
     }
 
     this.events = function() {

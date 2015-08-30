@@ -11,6 +11,12 @@ var eventEqualityByStringRepresentation = function(first, second) {
     }
 }
 
+var makeWithdrawlImpossible = function(account) {
+    account.withdraw = function() { 
+        throw 'withdrawl is not possible'; 
+    }
+}
+
 describe('When log is created', function () {
     var log;
     var account;
@@ -32,7 +38,7 @@ describe('When log is created', function () {
         expect(log.events()).toEqual([]);
     });
     describe('and when money is deposited', function() {
-        var depositedAmmount = new m.Money("EUR", 10);        
+        var depositedAmmount = new m.Money('EUR', 10);        
         beforeEach(function() {            
             spyOn(account, 'deposit');
             log.deposit(depositedAmmount);
@@ -47,7 +53,7 @@ describe('When log is created', function () {
 
     });
     describe('and when money is withdrawn', function() {        
-        var withdrawnAmmount = new m.Money("EUR", 10);
+        var withdrawnAmmount = new m.Money('EUR', 10);
         beforeEach(function() {            
             spyOn(account, 'withdraw');
             log.withdraw(withdrawnAmmount);
@@ -58,6 +64,23 @@ describe('When log is created', function () {
         it('should have been logged', function() {
             expect(log.events())
                 .toContain(new we.WithdrawEvent(account, currentTime, withdrawnAmmount));
+        });
+    });
+    describe('and when some operation fails', function() {
+        var tryToWithdraw = function () {        
+            try {
+                log.withdraw(new m.Money('EUR', 10));
+            } catch(ignored) {
+            }
+        };
+        var numberOfEventsBeforeOperation;
+        beforeEach(function() {
+            makeWithdrawlImpossible(account);
+            numberOfEventsBeforeOperation = log.events().length;
+            tryToWithdraw();
+        });
+        it('should still log the failed operation', function() {
+            expect(log.events().length).toBeGreaterThan(numberOfEventsBeforeOperation);
         });
     });
 });
