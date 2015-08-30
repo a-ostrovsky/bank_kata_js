@@ -1,17 +1,10 @@
 'use strict'
-var acc = require("../js/account");
-var m = require('../js/money.js');
-
-var moneyEquality = function(first, second) {
-    if (first instanceof m.Money && second instanceof m.Money) {
-        return first.currency === second.currency && first.ammount === second.ammount;
-    }
-}
+var acc = require("../../js/account");
+var m = require('../../js/money.js');
 
 describe("When account is initialized to EUR", function() {        
     var account;
     beforeEach(function() {
-        jasmine.addCustomEqualityTester(moneyEquality);
         account = new acc.Account("EUR");
     });
     it("should have zero balance", function() {
@@ -78,7 +71,6 @@ describe("When account is initialized to EUR", function() {
 describe("When account is initialized to USD", function() {
     var account;
     beforeEach(function() {
-        jasmine.addCustomEqualityTester(moneyEquality);
         account = new acc.Account("USD");
     });
     describe("and when money is deposited in EUR", function() {

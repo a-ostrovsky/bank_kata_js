@@ -1,6 +1,7 @@
 'use strict'
 
-exports.Money = function (currency, ammount) {    
+exports.Money = function (currency, ammount) {
+    //TODO: Check currency is valid
     this.currency = currency;
     this.ammount = ammount;
 
