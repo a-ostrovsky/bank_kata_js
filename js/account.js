@@ -1,6 +1,6 @@
 'use strict';
 
-var m = require('./money.js')
+var m = require('./money')
 
 exports.Account = function(currency) {
     var balance = 0;
@@ -15,8 +15,8 @@ exports.Account = function(currency) {
         var ammountInCurrencyOfAccount = money.convertTo(currency).ammount;
         if(ammountInCurrencyOfAccount > balance){
             throw { 
-                name: "WithdrawlOverdrawsAccount",
-                message: "Withdrawl not possible. Not enough money."
+                name: 'WithdrawlOverdrawsAccount',
+                message: 'Withdrawl not possible. Not enough money.'
             };
         }
         balance -= ammountInCurrencyOfAccount;

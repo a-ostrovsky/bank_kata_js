@@ -1,7 +1,7 @@
 'use strict'
 
-var de = require('./depositEvent.js');
-var we = require('./withdrawEvent.js');
+var de = require('./depositEvent');
+var we = require('./withdrawEvent');
 
 exports.EventLog = function(account) {
     var events = [];

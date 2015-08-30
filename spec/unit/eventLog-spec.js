@@ -1,9 +1,9 @@
 'use strict'
 
-var l = require('../../js/eventLog.js');
-var m = require('../../js/money.js');
-var de = require('../../js/depositEvent.js');
-var we = require('../../js/withdrawEvent.js');
+var l = require('../../js/eventLog');
+var m = require('../../js/money');
+var de = require('../../js/depositEvent');
+var we = require('../../js/withdrawEvent');
 
 var eventEqualityByStringRepresentation = function(first, second) {
     if (typeof first.toLog == 'function' && typeof second.toLog == 'function') {
