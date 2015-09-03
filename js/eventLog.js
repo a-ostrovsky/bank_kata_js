@@ -2,17 +2,23 @@
 
 var de = require('./depositEvent');
 var we = require('./withdrawEvent');
+var gbe = require('./getBalanceEvent');
 
 exports.EventLog = function(account) {
     var events = [];
 
     var processAndAddEventToLog = function(event) {
         events.push(event);
-        event.process();
+        return event.process();
     }
 
     this.events = function() {
         return events;
+    }
+
+    this.getBalance = function(money) {
+        var getBalanceEvent = new gbe.GetBalanceEvent(account, new Date());
+        return processAndAddEventToLog(getBalanceEvent);
     }
 
     this.deposit = function(money) {               

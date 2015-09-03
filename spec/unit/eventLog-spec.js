@@ -4,9 +4,11 @@ var l = require('../../js/eventLog');
 var m = require('../../js/money');
 var de = require('../../js/depositEvent');
 var we = require('../../js/withdrawEvent');
+var gbe = require('../../js/getBalanceEvent');
 
 var eventEqualityByStringRepresentation = function(first, second) {
-    if (typeof first.toLog == 'function' && typeof second.toLog == 'function') {
+    if (typeof first != 'undefined' && typeof second != 'undefined' && 
+            typeof first.toLog == 'function' && typeof second.toLog == 'function') {
         return first.toLog() === second.toLog();
     }
 }
@@ -25,7 +27,8 @@ describe('When log is created', function () {
         jasmine.addCustomEqualityTester(eventEqualityByStringRepresentation);
         account = {
             deposit: function(money) {},
-            withdraw: function(money) {}
+            withdraw: function(money) {},
+            getBalance: function() {}
         }        
         jasmine.clock().install();
         jasmine.clock().mockDate(currentTime);
@@ -65,6 +68,23 @@ describe('When log is created', function () {
             expect(log.events())
                 .toContain(new we.WithdrawEvent(account, currentTime, withdrawnAmmount));
         });
+    });
+    describe('and when asked for balance', function() {
+        var balanceOnAccount = new m.Money('EUR', 15);
+        var returnedBalance;        
+        beforeEach(function() {
+            account.getBalance = function() { 
+                return balanceOnAccount; 
+            }
+            returnedBalance = log.getBalance();
+        });
+        it('should return balance on the account', function() {
+            expect(returnedBalance).toEqual(balanceOnAccount);                    
+        });
+        it('should have been logged', function() {
+            expect(log.events())
+                .toContain(new gbe.GetBalanceEvent(account, currentTime));
+        }); 
     });
     describe('and when some operation fails', function() {
         var tryToWithdraw = function () {        
