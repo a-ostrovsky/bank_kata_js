@@ -1,6 +1,6 @@
 'use strict'
 
-var l = require('../../js/eventLog');
+var l = require('../../js/loggedAccount');
 var m = require('../../js/money');
 var de = require('../../js/depositEvent');
 var we = require('../../js/withdrawEvent');
@@ -20,8 +20,8 @@ var makeWithdrawlImpossible = function(account) {
     }
 }
 
-describe('When log is created', function () {
-    var log;
+describe('When loggedAccount is created', function () {
+    var loggedAccount;
     var account;
     var currentTime = new Date(2000,1,1);
     beforeEach(function() {
@@ -33,13 +33,13 @@ describe('When log is created', function () {
         }        
         jasmine.clock().install();
         jasmine.clock().mockDate(currentTime);
-        log = new l.EventLog(account);
+        loggedAccount = new l.LoggedAccount(account);
     });
     afterEach(function() {
         jasmine.clock().uninstall();            
     });
     it('should be empty', function() {
-        expect(log.events()).toEqual([]);
+        expect(loggedAccount.events()).toEqual([]);
     });
     describe('and when performing an operation', function() {
         function operationsProvider() {
@@ -59,13 +59,13 @@ describe('When log is created', function () {
         using(operationsProvider, function(data) {
             beforeEach(function() {
                 spyOn(account, data.operation);
-                log[data.operation](data.ammount);
+                loggedAccount[data.operation](data.ammount);
             });
             it('should have been executed ('+ data.operation  +') on the underlying account', function() {
                 expect(account[data.operation]).toHaveBeenCalledWith(data.ammount);
             });
             it('should have been logged', function() {
-                expect(log.events()).toContain(data.event);
+                expect(loggedAccount.events()).toContain(data.event);
             });
         });
     });
@@ -76,31 +76,31 @@ describe('When log is created', function () {
             account.getBalance = function() { 
                 return balanceOnAccount; 
             }
-            returnedBalance = log.getBalance();
+            returnedBalance = loggedAccount.getBalance();
         });
         it('should return balance on the account', function() {
             expect(returnedBalance).toEqual(balanceOnAccount);                    
         });
         it('should have been logged', function() {
-            expect(log.events())
+            expect(loggedAccount.events())
                 .toContain(new gbe.GetBalanceEvent(account, currentTime));
         }); 
     });
     describe('and when some operation fails', function() {
         var tryToWithdraw = function () {        
             try {
-                log.withdraw(new m.Money('EUR', 10));
+                loggedAccount.withdraw(new m.Money('EUR', 10));
             } catch(ignored) {
             }
         };
         var numberOfEventsBeforeOperation;
         beforeEach(function() {
             makeWithdrawlImpossible(account);
-            numberOfEventsBeforeOperation = log.events().length;
+            numberOfEventsBeforeOperation = loggedAccount.events().length;
             tryToWithdraw();
         });
-        it('should still log the failed operation', function() {
-            expect(log.events().length).toBeGreaterThan(numberOfEventsBeforeOperation);
+        it('should still loggedAccount the failed operation', function() {
+            expect(loggedAccount.events().length).toBeGreaterThan(numberOfEventsBeforeOperation);
         });
     });
 });

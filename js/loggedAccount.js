@@ -4,7 +4,7 @@ var de = require('./depositEvent');
 var we = require('./withdrawEvent');
 var gbe = require('./getBalanceEvent');
 
-exports.EventLog = function(account) {
+exports.LoggedAccount = function(account) {
     var events = [];
 
     var processAndAddEventToLog = function(event) {
