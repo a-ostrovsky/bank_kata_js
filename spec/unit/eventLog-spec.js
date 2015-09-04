@@ -5,6 +5,7 @@ var m = require('../../js/money');
 var de = require('../../js/depositEvent');
 var we = require('../../js/withdrawEvent');
 var gbe = require('../../js/getBalanceEvent');
+var using = require('jasmine-data-provider');
 
 var eventEqualityByStringRepresentation = function(first, second) {
     if (typeof first != 'undefined' && typeof second != 'undefined' && 
@@ -40,33 +41,32 @@ describe('When log is created', function () {
     it('should be empty', function() {
         expect(log.events()).toEqual([]);
     });
-    describe('and when money is deposited', function() {
-        var depositedAmmount = new m.Money('EUR', 10);        
-        beforeEach(function() {            
-            spyOn(account, 'deposit');
-            log.deposit(depositedAmmount);
-        });
-        it('should have money on the account', function() {
-            expect(account.deposit).toHaveBeenCalledWith(depositedAmmount);
-        });
-        it('should have been logged', function() {
-            expect(log.events())
-                .toContain(new de.DepositEvent(account, currentTime, depositedAmmount));
-        });
-
-    });
-    describe('and when money is withdrawn', function() {        
-        var withdrawnAmmount = new m.Money('EUR', 10);
-        beforeEach(function() {            
-            spyOn(account, 'withdraw');
-            log.withdraw(withdrawnAmmount);
-        });
-        it('should have money withdrawn', function() {
-            expect(account.withdraw).toHaveBeenCalledWith(withdrawnAmmount);
-        });
-        it('should have been logged', function() {
-            expect(log.events())
-                .toContain(new we.WithdrawEvent(account, currentTime, withdrawnAmmount));
+    describe('and when performing an operation', function() {
+        function operationsProvider() {
+            return [
+            {
+                operation: 'deposit', 
+                ammount: new m.Money('EUR', 10), 
+                event: new de.DepositEvent(account, currentTime, new m.Money('EUR', 10))
+            },
+            {
+                operation: 'withdraw', 
+                ammount: new m.Money('EUR', 10),
+                event: new we.WithdrawEvent(account, currentTime, new m.Money('EUR', 10))
+            }
+            ];
+        }        
+        using(operationsProvider, function(data) {
+            beforeEach(function() {
+                spyOn(account, data.operation);
+                log[data.operation](data.ammount);
+            });
+            it('should have been executed ('+ data.operation  +') on the underlying account', function() {
+                expect(account[data.operation]).toHaveBeenCalledWith(data.ammount);
+            });
+            it('should have been logged', function() {
+                expect(log.events()).toContain(data.event);
+            });
         });
     });
     describe('and when asked for balance', function() {
