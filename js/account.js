@@ -3,23 +3,22 @@
 var m = require('./money')
 
 exports.Account = function(currency) {
-    var balance = 0;
+    var balance = new m.Money(currency, 0);
 
     this.getBalance = function() {
-        return new m.Money(currency, balance);
+        return balance;
     }
     this.deposit = function(money) {
-        balance += money.convertTo(currency).ammount;
+        balance = balance.add(money);
     }
     this.withdraw = function(money) {
-        var ammountInCurrencyOfAccount = money.convertTo(currency).ammount;
-        if(ammountInCurrencyOfAccount > balance){
+        if(money.isLargerThan(balance)){
             throw { 
                 name: 'WithdrawlOverdrawsAccount',
                 message: 'Withdrawl not possible. Not enough money.'
             };
         }
-        balance -= ammountInCurrencyOfAccount;
+        balance = balance.subtract(money);
     }
 }
 

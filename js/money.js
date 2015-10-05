@@ -6,6 +6,25 @@ exports.Money = function (currency, ammount) {
 
     var money = this;
 
+    var addOrSubtract = function(sign, other) {
+        var otherInSameCurrency = other.convertTo(money.currency);
+        var newAmmount = money.ammount + sign * otherInSameCurrency.ammount;
+        return new money.constructor(money.currency, newAmmount);
+    }
+
+    this.isLargerThan = function(other) {
+        var otherInSameCurrency = other.convertTo(money.currency);
+        return money.ammount - otherInSameCurrency.ammount > 0;
+    }
+
+    this.add = function(other) {
+        return addOrSubtract(1, other);      
+    }
+
+    this.subtract = function(other) {
+        return addOrSubtract(-1, other);
+    }
+
     this.convertTo = function(currency) {
         var currencyFrom = money.currency;
         if(currencyFrom === 'USD' && currency === 'EUR') {        
