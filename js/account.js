@@ -8,9 +8,11 @@ exports.Account = function(currency) {
     this.getBalance = function() {
         return balance;
     }
+
     this.deposit = function(money) {
         balance = balance.add(money);
     }
+
     this.withdraw = function(money) {
         if(money.isLargerThan(balance)){
             throw { 

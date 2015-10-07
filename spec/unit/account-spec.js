@@ -24,7 +24,8 @@ describe('When account is initialized to EUR', function() {
                 account.deposit(secondAmmount);
             });
             it('should have balance equal to first deposit + second deposit', function() {
-                expect(account.getBalance()).toEqual(new m.Money('EUR', firstAmmount.ammount + secondAmmount.ammount));
+                expect(account.getBalance()).toEqual(new m.Money('EUR', 
+                   firstAmmount.getAmmount() + secondAmmount.getAmmount()));
             });
         });
         describe('and when less money than balance is withdrawn', function() {
@@ -33,7 +34,7 @@ describe('When account is initialized to EUR', function() {
                 account.withdraw(withdrawl);
             });
             it('should have balance equal to deposit - withdrawl', function() {
-                expect(account.getBalance()).toEqual(new m.Money('EUR', firstAmmount.ammount - withdrawl.ammount));
+                expect(account.getBalance()).toEqual(new m.Money('EUR', firstAmmount.getAmmount() - withdrawl.getAmmount()));
             });
         })
         describe('and when withdrawl would lead to overdrawn account', function() {
@@ -78,6 +79,7 @@ describe('When account is initialized to USD', function() {
             account.deposit(new m.Money('EUR', 10));
         });
         it('should have balanace in currency of the account', function() {
+            debugger;
             expect(account.getBalance()).toEqual(new m.Money('USD', 11));
         });
     });
