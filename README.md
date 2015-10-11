@@ -1,9 +1,10 @@
 # bank kata
 ## Requirements
-* deposit in eur/usd
-* withdraw in eur/usd
-* log of user interactions
+* Deposit in eur/usd
+* Withdraw in eur/usd
+* Log of user interactions
 
 ## Limitations
-* conversion rate from usd to eur and vice versa is fixed
-* overdraft accounts are not allowed
+* Conversion rate from usd to eur and vice versa is fixed
+* Overdraft accounts are not allowed
+* And most important: Flowating point numbers are used for money which may lead to incorrect results
