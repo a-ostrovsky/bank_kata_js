@@ -1,4 +1,7 @@
-# bank kata
+# Bank Kata
+
+This is an implementation of the __Bank Kata__ task as described below.
+
 ## Requirements
 * Deposit in eur/usd
 * Withdraw in eur/usd
